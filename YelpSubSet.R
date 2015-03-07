@@ -5,6 +5,10 @@ word_search <- function(word,string_vector){
   return(out)
 }
 
+## Required libraries
+library(sqldf)
+
+
 ## Reads in the data
 rvwdf <- read.csv('yelp_academic_dataset_review.csv')
 bizdf <- read.csv('yelp_academic_dataset_business.csv')
@@ -14,17 +18,20 @@ chkdf <- read.csv('yelp_academic_dataset_checkin.csv')
 
 ## Subsets the data
 
-# Select only the bad data
-# rvwdf$BadRating <- ifelse(rvwdf$stars<=1,1,0)
+# Detect which city has the most reviews for resturants.
+# Merge biz and review tables by the buisness ids 
 x <- data.frame(table(bizdf$city))
 x <- x[order(x$Freq),]
 RowCntDf <- data.frame(table(rvwdf$business_id))
 tst <- merge(bizdf,RowCntDf,by.x='business_id','Var1')
+
+# Select only the Resturants
 tst$Res <- word_search('Restaurant',tst$categories)
 tst <- tst[,c('categories','Freq','business_id','city','Res')][tst$Res==1,]
 x <- sqldf('select city, sum(Freq) as ReviewCount, count(*) as BizCount from tst group by 1')
 x <- x[order(x$ReviewCount,decreasing=T),]
 geos <- as.character(x$city[1:5])
+
 # This part selects Las Vegas
 bizlist <- bizdf$business_id[bizdf$city == geos[1] & bizdf$attributes.Waiter.Service=='True']
 txtvector <- as.character(rvwdf$text[rvwdf$business_id %in% bizlist])
