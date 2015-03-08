@@ -7,8 +7,8 @@ from wordcloud import WordCloud, STOPWORDS
 
 data = pd.read_csv("WordProbs.csv", header = 0)
 
-good = data[(data['Coefficients'] > 0)]
-bad = data[(data['Coefficients'] < 0)]
+good = data[(data['Coefficients'] < 0)]
+bad = data[(data['Coefficients'] > 0)]
 
 bad['Freq'] = abs(bad['Coefficients']) * 100. 
 good['Freq'] = abs(good['Coefficients']) * 100. 
@@ -30,6 +30,9 @@ def totext(good):
 	text =  text.translate(None, "[].\'")
 
 	stopwords = STOPWORDS.copy()
+	stopwords.add('marginally')
+	stopwords.add('demographics')
+
 	#stopwords.add('food')
 	#stopwords.add('restaurant')
 	#stopwords.add('place')
@@ -38,7 +41,7 @@ def totext(good):
 
 	wordcloud = WordCloud(
 		font_path='/Users/stump/Library/Fonts/CabinSketch-Bold.ttf',
-		#stopwords=stopwords,
+		stopwords=stopwords,
 		background_color='black'
 		).generate(text)
 

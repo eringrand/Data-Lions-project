@@ -8,12 +8,13 @@ def makeworldcloud(fileName):
 		data=myfile.readlines()
 
 	stopwords = STOPWORDS.copy()
-	stopwords.add('food')
-	stopwords.add('restaurant')
-	stopwords.add('place')
-	stopwords.add('good')
-	stopwords.add('vegas')
-
+	#stopwords.add('food')
+	#stopwords.add('restaurant')
+	#stopwords.add('place')
+	#stopwords.add('good')
+	#stopwords.add('vegas')
+	#stopwords.add('great')
+	stopwords.add('u')
 
 	text = ""
 	for line in data:
@@ -34,7 +35,6 @@ def makeworldcloud(fileName):
 		).generate(text)
 
 	return wordcloud
-
 
 goodWC = makeworldcloud("good-reviews.txt")
 badWC = makeworldcloud("bad-reviews.txt")
