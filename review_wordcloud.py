@@ -3,7 +3,6 @@
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
 
-
 def makeworldcloud(fileName):
 	with open ("temp/"+fileName, "r") as myfile:
 		data=myfile.readlines()
@@ -13,6 +12,8 @@ def makeworldcloud(fileName):
 	stopwords.add('restaurant')
 	stopwords.add('place')
 	stopwords.add('good')
+	stopwords.add('vegas')
+
 
 	text = ""
 	for line in data:
@@ -38,12 +39,11 @@ def makeworldcloud(fileName):
 goodWC = makeworldcloud("good-reviews.txt")
 badWC = makeworldcloud("bad-reviews.txt")
 
-
 plt.imshow(goodWC)
 plt.axis("off")
-plt.savefig("temp1.png")
+plt.savefig("good.png")
 
 plt.imshow(badWC)
 plt.axis("off")
-plt.savefig("temp2.png")
+plt.savefig("bad.png")
 
